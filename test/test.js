@@ -27,14 +27,17 @@ describe('assert', function () {
 
   it('可以捕获并验证函数fn的错误', function () {
     function fn() {
-      try {
-        xxx;
-      } catch (e) {
-        throw new Error(e)
-      }
+
+      xxx;
+      throw new Error({ name: 'ReferenceError:', message: 'xxx is not defined' })
 
     }
     // 修改下面代码使得满足测试描述
-    assert.throws(fn, { name: 'ReferenceError:', message: 'xxx is not defined' });
+    assert.throws(fn, function (err) {
+      if ((err instanceof Error)) {
+        return true;
+      }
+    },
+      '捕获错误');
   })
 })
